@@ -17,3 +17,8 @@ local.properties
 
 # Maven generated files
 target/
+
+# Eclipse files
+.classpath
+.project
+.settings/
