@@ -44,6 +44,16 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        Tab tab = actionBar
+                .newTab()
+                .setText(R.string.current_rolls_title)
+                .setTabListener(
+                        new TabListener<CurrentRollsFragment>(this, "current",
+                                CurrentRollsFragment.class));
+        actionBar.addTab(tab);
     }
 }

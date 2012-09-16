@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dice Tracker</string>
+    <string name="current_rolls_title">Current</string>
+    <string name="current_rolls_fragment">Current Rolls Fragment</string>
 </resources>
