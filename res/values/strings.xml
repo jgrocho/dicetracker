@@ -3,4 +3,6 @@
     <string name="app_name">Dice Tracker</string>
     <string name="current_rolls_title">Current</string>
     <string name="current_rolls_fragment">Current Rolls Fragment</string>
+    <string name="historic_rolls_title">Historic</string>
+    <string name="historic_rolls_fragment">Historic Rolls Fragment</string>
 </resources>

@@ -55,5 +55,13 @@ public class MainActivity extends Activity {
                         new TabListener<CurrentRollsFragment>(this, "current",
                                 CurrentRollsFragment.class));
         actionBar.addTab(tab);
+
+        tab = actionBar
+                .newTab()
+                .setText(R.string.historic_rolls_title)
+                .setTabListener(
+                        new TabListener<HistoricRollsFragment>(this,
+                                "historic", HistoricRollsFragment.class));
+        actionBar.addTab(tab);
     }
 }
