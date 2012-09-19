@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:jgrocho="http://schemas.android.com/apk/res/com.jgrocho.dicetracker"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/current_rolls_fragment"
+
+    <com.jgrocho.layout.FlowLayout
+            android:id="@+id/buttonFlow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
         />
+
 </LinearLayout>

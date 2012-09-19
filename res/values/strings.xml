@@ -5,4 +5,18 @@
     <string name="current_rolls_fragment">Current Rolls Fragment</string>
     <string name="historic_rolls_title">Historic</string>
     <string name="historic_rolls_fragment">Historic Rolls Fragment</string>
+
+    <string-array name="numerals">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
 </resources>
