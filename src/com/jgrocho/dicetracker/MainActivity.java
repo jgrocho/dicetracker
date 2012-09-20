@@ -3,6 +3,8 @@ package com.jgrocho.dicetracker;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
 public class MainActivity extends Activity {
@@ -20,13 +22,19 @@ public class MainActivity extends Activity {
 
         int tabIdx = 0;
         if (savedInstanceState != null) {
-            mRolls = savedInstanceState.getIntArray("rolls");
+            mRolls = savedInstanceState.getIntArray("current");
             mHistoricRolls = savedInstanceState.getIntArray("historic");
             tabIdx = savedInstanceState.getInt("tab");
         } else {
+            SharedPreferences prefs = getPreferences(MODE_PRIVATE);
             mRolls = new int[11];
             mHistoricRolls = new int[11];
+            for (int i = 0; i < 11; i++) {
+                mRolls[i] = prefs.getInt("current" + String.valueOf(i), 0);
+                mHistoricRolls[i] = prefs.getInt("historic" + String.valueOf(i), 0);
+            }
         }
+
 
         if (mCurrentRollsFragment == null)
             mCurrentRollsFragment = new CurrentRollsFragment(mRolls);
@@ -54,9 +62,21 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putIntArray("rolls", mRolls);
+        savedInstanceState.putIntArray("current", mRolls);
         savedInstanceState.putIntArray("historic", mHistoricRolls);
         savedInstanceState.putInt("tab", getActionBar().getSelectedNavigationIndex());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        Editor prefEditor = prefs.edit();
+        for (int i = 0; i < 11; i++) {
+            prefEditor.putInt("current" + String.valueOf(i), mRolls[i]);
+            prefEditor.putInt("historic" + String.valueOf(i), mHistoricRolls[i]);
+        }
+        prefEditor.apply();
     }
 
     protected void resetRolls() {
