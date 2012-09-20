@@ -1,20 +1,37 @@
 package com.jgrocho.dicetracker;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.jgrocho.layout.FlowLayout;
 
-public class CurrentRollsFragment extends Fragment {
+public class CurrentRollsFragment extends Fragment implements
+        ActionBar.TabListener {
 
     private Button[] mNumeralButtons;
+    private int[] mRolls;
+    private boolean mFresh;
+
+    public CurrentRollsFragment() {
+        this(new int[11]);
+    }
+
+    public CurrentRollsFragment(int[] rolls) {
+        mRolls = rolls;
+        mFresh = true;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +54,7 @@ public class CurrentRollsFragment extends Fragment {
             button.setMinimumHeight(minSize);
             button.setMinWidth(minSize);
             button.setMinimumWidth(minSize);
+            button.setTag(i);
             mNumeralButtons[i] = button;
         }
     }
@@ -44,12 +62,22 @@ public class CurrentRollsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.current_rolls_fragment,
-                container, false);
-        FlowLayout buttonLayout = (FlowLayout) view
+        LinearLayout view = (LinearLayout) inflater.inflate(
+                R.layout.current_rolls_fragment, container, false);
+
+        final BarChartView barChartView = (BarChartView) view.getChildAt(1);
+        final FlowLayout buttonLayout = (FlowLayout) view
                 .findViewById(R.id.buttonFlow);
-        for (int i = 0; i < 11; i++)
+
+        barChartView.setRolls(mRolls);
+        for (int i = 0; i < 11; i++) {
+            mNumeralButtons[i].setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    barChartView.increaseAt(((Integer) v.getTag()).intValue());
+                }
+            });
             buttonLayout.addView(mNumeralButtons[i]);
+        }
 
         return view;
     }
@@ -58,5 +86,32 @@ public class CurrentRollsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ((ViewGroup) getView().findViewById(R.id.buttonFlow)).removeAllViews();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putIntArray("rolls", mRolls);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void setRolls(int[] rolls) {
+        mRolls = rolls;
+    }
+
+    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        if (mFresh) {
+            mFresh = false;
+            ft.replace(android.R.id.content, this, "current");
+        } else {
+            ft.attach(this);
+        }
+    }
+
+    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+        if (!mFresh)
+            ft.detach(this);
+    }
+
+    public void onTabReselected(Tab tab, FragmentTransaction ft) {
     }
 }

@@ -3,47 +3,32 @@ package com.jgrocho.dicetracker;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 public class MainActivity extends Activity {
 
-    public static class TabListener<T extends Fragment> implements
-            ActionBar.TabListener {
-        private Fragment mFragment;
-        private final Activity mActivity;
-        private final String mTag;
-        private final Class<T> mClass;
+    private int[] mRolls;
 
-        public TabListener(Activity activity, String tag, Class<T> klass) {
-            mActivity = activity;
-            mTag = tag;
-            mClass = klass;
-        }
-
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            if (mFragment == null) {
-                mFragment = Fragment.instantiate(mActivity, mClass.getName());
-                ft.add(android.R.id.content, mFragment, mTag);
-            } else {
-                ft.attach(mFragment);
-            }
-        }
-
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-            if (mFragment != null)
-                ft.detach(mFragment);
-        }
-
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-        }
-    }
+    private CurrentRollsFragment mCurrentRollsFragment;
+    private HistoricRollsFragment mHistoricRollsFragment;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int tabIdx = 0;
+        if (savedInstanceState != null) {
+            mRolls = savedInstanceState.getIntArray("rolls");
+            tabIdx = savedInstanceState.getInt("tab");
+        } else {
+            mRolls = new int[11];
+        }
+
+        if (mCurrentRollsFragment == null)
+            mCurrentRollsFragment = new CurrentRollsFragment(mRolls);
+        if (mHistoricRollsFragment == null)
+            mHistoricRollsFragment = new HistoricRollsFragment();
 
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -51,17 +36,22 @@ public class MainActivity extends Activity {
         Tab tab = actionBar
                 .newTab()
                 .setText(R.string.current_rolls_title)
-                .setTabListener(
-                        new TabListener<CurrentRollsFragment>(this, "current",
-                                CurrentRollsFragment.class));
+                .setTabListener(mCurrentRollsFragment);
         actionBar.addTab(tab);
 
         tab = actionBar
                 .newTab()
                 .setText(R.string.historic_rolls_title)
-                .setTabListener(
-                        new TabListener<HistoricRollsFragment>(this,
-                                "historic", HistoricRollsFragment.class));
+                .setTabListener(mHistoricRollsFragment);
         actionBar.addTab(tab);
+
+        actionBar.setSelectedNavigationItem(tabIdx);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putIntArray("rolls", mRolls);
+        savedInstanceState.putInt("tab", getActionBar().getSelectedNavigationIndex());
     }
 }
