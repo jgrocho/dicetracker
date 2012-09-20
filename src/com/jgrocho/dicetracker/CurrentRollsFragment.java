@@ -3,11 +3,15 @@ package com.jgrocho.dicetracker;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -37,6 +41,8 @@ public class CurrentRollsFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         final Resources r = getResources();
         final Activity activity = getActivity();
@@ -81,6 +87,35 @@ public class CurrentRollsFragment extends Fragment implements
         }
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.current_rolls, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_clear:
+                showClearDialog();
+                break;
+            case R.id.menu_save:
+                showSaveDialog();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showClearDialog() {
+        DialogFragment newFragment = ClearDialogFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    private void showSaveDialog() {
+        DialogFragment newFragment = SaveDialogFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
     @Override

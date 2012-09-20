@@ -3,10 +3,7 @@ package com.jgrocho.dicetracker;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class MainActivity extends Activity {
 
@@ -62,26 +59,6 @@ public class MainActivity extends Activity {
         savedInstanceState.putInt("tab", getActionBar().getSelectedNavigationIndex());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_clear:
-                showClearDialog();
-                break;
-            case R.id.menu_save:
-                showSaveDialog();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     protected void resetRolls() {
         for (int i = 0; i < 11; i++)
             mRolls[i] = 0;
@@ -93,15 +70,5 @@ public class MainActivity extends Activity {
             mHistoricRolls[i] += mRolls[i];
         resetRolls();
         mHistoricRollsFragment.setRolls(mHistoricRolls);
-    }
-
-    private void showClearDialog() {
-        DialogFragment newFragment = ClearDialogFragment.newInstance();
-        newFragment.show(getFragmentManager(), "dialog");
-    }
-
-    private void showSaveDialog() {
-        DialogFragment newFragment = SaveDialogFragment.newInstance();
-        newFragment.show(getFragmentManager(), "dialog");
     }
 }
