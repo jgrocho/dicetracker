@@ -19,4 +19,6 @@
         <item>11</item>
         <item>12</item>
     </string-array>
+
+    <string name="menu_clear">Clear</string>
 </resources>

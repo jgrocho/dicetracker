@@ -5,6 +5,9 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuItem;
+
 public class MainActivity extends Activity {
 
     private int[] mRolls;
@@ -53,5 +56,21 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putIntArray("rolls", mRolls);
         savedInstanceState.putInt("tab", getActionBar().getSelectedNavigationIndex());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_clear:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
