@@ -16,7 +16,7 @@ public class SaveDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setMessage(R.string.save_dialog)
+                .setMessage(R.string.save_dialog_message)
                 .setPositiveButton(R.string.save_dialog_yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,

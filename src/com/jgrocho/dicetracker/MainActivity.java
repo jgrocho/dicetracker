@@ -79,16 +79,22 @@ public class MainActivity extends Activity {
         prefEditor.apply();
     }
 
-    protected void resetRolls() {
+    protected void resetCurrentRolls() {
         for (int i = 0; i < 11; i++)
             mRolls[i] = 0;
         mCurrentRollsFragment.setRolls(mRolls);
     }
 
+    protected void resetHistoricRolls() {
+        for (int i = 0; i < 11; i++)
+            mHistoricRolls[i] = 0;
+        mHistoricRollsFragment.setRolls(mHistoricRolls);
+    }
+
     protected void saveRolls() {
         for (int i = 0; i < 11; i++)
             mHistoricRolls[i] += mRolls[i];
-        resetRolls();
+        resetCurrentRolls();
         mHistoricRollsFragment.setRolls(mHistoricRolls);
     }
 }

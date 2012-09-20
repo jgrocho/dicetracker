@@ -109,7 +109,7 @@ public class CurrentRollsFragment extends Fragment implements
     }
 
     private void showClearDialog() {
-        DialogFragment newFragment = ClearDialogFragment.newInstance();
+        DialogFragment newFragment = ClearDialogFragment.newInstance(ClearDialogFragment.CURRENT);
         newFragment.show(getFragmentManager(), "dialog");
     }
 

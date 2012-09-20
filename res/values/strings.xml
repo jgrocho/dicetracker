@@ -23,11 +23,12 @@
     <string name="menu_clear">Clear</string>
     <string name="clear_dialog_yes">Yes</string>
     <string name="clear_dialog_no">No</string>
-    <string name="clear_dialog">Clear current rolls?</string>
+    <string name="clear_dialog_current">Clear current rolls?</string>
+    <string name="clear_dialog_historic">Clear historic rolls?</string>
 
     <string name="menu_save">Save</string>
     <string name="save_dialog_yes">Yes</string>
     <string name="save_dialog_no">No</string>
-    <string name="save_dialog">Save current rolls?</string>
+    <string name="save_dialog_message">Save current rolls?</string>
 
 </resources>

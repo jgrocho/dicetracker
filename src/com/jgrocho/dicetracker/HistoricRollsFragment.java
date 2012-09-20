@@ -2,10 +2,14 @@ package com.jgrocho.dicetracker;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,6 +34,8 @@ public class HistoricRollsFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -42,6 +48,27 @@ public class HistoricRollsFragment extends Fragment implements
         mBarChartView.setRolls(mRolls);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.historic_rolls, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_clear:
+                showClearDialog();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showClearDialog() {
+        DialogFragment newFragment = ClearDialogFragment.newInstance(ClearDialogFragment.HISTORIC);
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
     public void setRolls(int[] rolls) {
