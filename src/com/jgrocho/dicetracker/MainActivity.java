@@ -3,8 +3,8 @@ package com.jgrocho.dicetracker;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -68,9 +68,21 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_clear:
+                showClearDialog();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void resetRolls() {
+        for (int i = 0; i < 11; i++)
+            mRolls[i] = 0;
+        mCurrentRollsFragment.setRolls(mRolls);
+    }
+
+    private void showClearDialog() {
+        DialogFragment newFragment = ClearDialogFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
     }
 }

@@ -21,4 +21,8 @@
     </string-array>
 
     <string name="menu_clear">Clear</string>
+
+    <string name="clear_dialog_yes">Yes</string>
+    <string name="clear_dialog_no">No</string>
+    <string name="clear_dialog">Clear current rolls?</string>
 </resources>

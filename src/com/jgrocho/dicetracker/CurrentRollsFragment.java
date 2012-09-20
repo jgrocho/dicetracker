@@ -21,6 +21,7 @@ public class CurrentRollsFragment extends Fragment implements
         ActionBar.TabListener {
 
     private Button[] mNumeralButtons;
+    private BarChartView mBarChartView;
     private int[] mRolls;
     private boolean mFresh;
 
@@ -65,15 +66,15 @@ public class CurrentRollsFragment extends Fragment implements
         LinearLayout view = (LinearLayout) inflater.inflate(
                 R.layout.current_rolls_fragment, container, false);
 
-        final BarChartView barChartView = (BarChartView) view.getChildAt(1);
+        mBarChartView = (BarChartView) view.getChildAt(1);
         final FlowLayout buttonLayout = (FlowLayout) view
                 .findViewById(R.id.buttonFlow);
 
-        barChartView.setRolls(mRolls);
+        mBarChartView.setRolls(mRolls);
         for (int i = 0; i < 11; i++) {
             mNumeralButtons[i].setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    barChartView.increaseAt(((Integer) v.getTag()).intValue());
+                    mBarChartView.increaseAt(((Integer) v.getTag()).intValue());
                 }
             });
             buttonLayout.addView(mNumeralButtons[i]);
@@ -88,14 +89,8 @@ public class CurrentRollsFragment extends Fragment implements
         ((ViewGroup) getView().findViewById(R.id.buttonFlow)).removeAllViews();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putIntArray("rolls", mRolls);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
     public void setRolls(int[] rolls) {
-        mRolls = rolls;
+        mBarChartView.setRolls(rolls);
     }
 
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
