@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BarChartView">
+        <attr name="barColor" format="color" />
+        <attr name="barBorderColor" format="color" />
+        <attr name="barTextColor" format="color" />
+        <attr name="barTextSize" format="dimension" />
+        <attr name="labelColor" format="color" />
+        <attr name="labelSize" format="dimension" />
+    </declare-styleable>
+    <color name="barColor">#33B5E5</color>
+    <color name="barBorderColor">#0099CC</color>
+    <color name="barTextColor">#FFFFFF</color>
+    <dimen name="barTextSize">18sp</dimen>
+    <color name="labelColor">#FFFFFF</color>
+    <dimen name="labelSize">18sp</dimen>
+</resources>
