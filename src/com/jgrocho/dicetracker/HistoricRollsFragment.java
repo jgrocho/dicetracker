@@ -9,19 +9,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.LinearLayout;
+
 public class HistoricRollsFragment extends Fragment implements
         ActionBar.TabListener {
 
+    private int[] mRolls;
     private boolean mFresh;
+    private BarChartView mBarChartView;
 
     public HistoricRollsFragment() {
+        this(new int[11]);
+    }
+
+    public HistoricRollsFragment(int[] rolls) {
+        mRolls = rolls;
         mFresh = true;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.historic_rolls_fragment, container,
-                false);
+        LinearLayout view = (LinearLayout) inflater.inflate(
+                R.layout.historic_rolls_fragment, container, false);
+
+        mBarChartView = (BarChartView) view.getChildAt(0);
+        mBarChartView.setRolls(mRolls);
+
+        return view;
+    }
+
+    public void setRolls(int[] rolls) {
+        mRolls = rolls;
     }
 
     public void onTabSelected(Tab tab, FragmentTransaction ft) {

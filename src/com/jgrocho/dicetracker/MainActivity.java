@@ -11,6 +11,7 @@ import android.view.MenuItem;
 public class MainActivity extends Activity {
 
     private int[] mRolls;
+    private int[] mHistoricRolls;
 
     private CurrentRollsFragment mCurrentRollsFragment;
     private HistoricRollsFragment mHistoricRollsFragment;
@@ -23,9 +24,11 @@ public class MainActivity extends Activity {
         int tabIdx = 0;
         if (savedInstanceState != null) {
             mRolls = savedInstanceState.getIntArray("rolls");
+            mHistoricRolls = savedInstanceState.getIntArray("historic");
             tabIdx = savedInstanceState.getInt("tab");
         } else {
             mRolls = new int[11];
+            mHistoricRolls = new int[11];
         }
 
         if (mCurrentRollsFragment == null)
@@ -55,6 +58,7 @@ public class MainActivity extends Activity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putIntArray("rolls", mRolls);
+        savedInstanceState.putIntArray("historic", mHistoricRolls);
         savedInstanceState.putInt("tab", getActionBar().getSelectedNavigationIndex());
     }
 
@@ -70,6 +74,9 @@ public class MainActivity extends Activity {
             case R.id.menu_clear:
                 showClearDialog();
                 break;
+            case R.id.menu_save:
+                showSaveDialog();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -81,8 +88,20 @@ public class MainActivity extends Activity {
         mCurrentRollsFragment.setRolls(mRolls);
     }
 
+    protected void saveRolls() {
+        for (int i = 0; i < 11; i++)
+            mHistoricRolls[i] += mRolls[i];
+        resetRolls();
+        mHistoricRollsFragment.setRolls(mHistoricRolls);
+    }
+
     private void showClearDialog() {
         DialogFragment newFragment = ClearDialogFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    private void showSaveDialog() {
+        DialogFragment newFragment = SaveDialogFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
 }

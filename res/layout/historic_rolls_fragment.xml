@@ -4,9 +4,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    <TextView
+
+    <com.jgrocho.dicetracker.BarChartView
+            android:id="@+id/historicBarChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/historic_rolls_fragment"
         />
+
 </LinearLayout>
