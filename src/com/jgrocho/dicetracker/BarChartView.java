@@ -98,7 +98,7 @@ public class BarChartView extends View implements Rolls.OnChangeListener {
         // Draw bars
         int maxCount = max(mRolls.getRolls());
         if (maxCount > 0) {
-            float segmentHeight = mChartHeight / maxCount;
+            float segmentHeight = ((float) mChartHeight) / ((float) maxCount);
             for (int i = 0; i < 11; i++) {
                 if (mRolls.getAt(i) > 0) {
                     float left = i * mBarWidth;
