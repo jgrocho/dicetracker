@@ -116,6 +116,7 @@ public class CurrentRollsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mRolls.unregisterListener(mBarChartView);
         ((ViewGroup) getView().findViewById(R.id.buttonFlow)).removeAllViews();
     }
 }

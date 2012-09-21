@@ -49,6 +49,12 @@ public class HistoricRollsFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRolls.unregisterListener(mBarChartView);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.historic_rolls, menu);
     }

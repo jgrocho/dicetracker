@@ -53,6 +53,10 @@ public class Rolls {
         mListeners.add(l);
     }
 
+    public void unregisterListener(OnChangeListener l) {
+        mListeners.remove(l);
+    }
+
     private void notifySet() {
         for (OnChangeListener l : mListeners)
             l.onSet();
