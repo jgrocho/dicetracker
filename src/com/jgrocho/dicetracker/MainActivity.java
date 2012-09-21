@@ -1,15 +1,16 @@
 package com.jgrocho.dicetracker;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
-public class MainActivity extends Activity {
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+public class MainActivity extends SherlockFragmentActivity {
 
     private Rolls mCurrentRolls;
     private Rolls mHistoricRolls;
@@ -39,7 +40,7 @@ public class MainActivity extends Activity {
         mCurrentRollsFragment = new CurrentRollsFragment(mCurrentRolls);
         mHistoricRollsFragment = new HistoricRollsFragment(mHistoricRolls);
 
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         Tab tab = actionBar.newTab().setText(R.string.current_rolls_title)
@@ -58,7 +59,7 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putIntArray("current", mCurrentRolls.getRolls());
         savedInstanceState.putIntArray("historic", mHistoricRolls.getRolls());
-        savedInstanceState.putInt("tab", getActionBar().getSelectedNavigationIndex());
+        savedInstanceState.putInt("tab", getSupportActionBar().getSelectedNavigationIndex());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class MainActivity extends Activity {
             prefEditor.putInt("current" + String.valueOf(i), mCurrentRolls.getAt(i));
             prefEditor.putInt("historic" + String.valueOf(i), mHistoricRolls.getAt(i));
         }
-        prefEditor.apply();
+        prefEditor.commit();
     }
 
     protected void resetCurrentRolls() {

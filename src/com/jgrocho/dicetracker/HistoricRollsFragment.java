@@ -1,21 +1,18 @@
 package com.jgrocho.dicetracker;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
 
-public class HistoricRollsFragment extends Fragment {
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class HistoricRollsFragment extends SherlockFragment {
 
     private Rolls mRolls;
     private BarChartView mBarChartView;
@@ -71,7 +68,7 @@ public class HistoricRollsFragment extends Fragment {
     }
 
     private void showClearDialog() {
-        DialogFragment newFragment = ClearDialogFragment.newInstance(ClearDialogFragment.HISTORIC);
+        SherlockDialogFragment newFragment = ClearDialogFragment.newInstance(ClearDialogFragment.HISTORIC);
         newFragment.show(getFragmentManager(), "dialog");
     }
 }

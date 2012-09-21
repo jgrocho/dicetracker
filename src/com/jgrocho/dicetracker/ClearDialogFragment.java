@@ -2,11 +2,12 @@ package com.jgrocho.dicetracker;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class ClearDialogFragment extends DialogFragment {
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
+public class ClearDialogFragment extends SherlockDialogFragment {
 
     public static final int CURRENT = 1;
     public static final int HISTORIC = 2;
@@ -32,7 +33,7 @@ public class ClearDialogFragment extends DialogFragment {
                 message = R.string.clear_dialog_current;
         }
 
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getSherlockActivity())
                 .setMessage(message)
                 .setPositiveButton(R.string.clear_dialog_yes,
                         new DialogInterface.OnClickListener() {
@@ -40,11 +41,11 @@ public class ClearDialogFragment extends DialogFragment {
                                     int whichButton) {
                                 switch (type) {
                                     case HISTORIC:
-                                        ((MainActivity) getActivity()).resetHistoricRolls();
+                                        ((MainActivity) getSherlockActivity()).resetHistoricRolls();
                                         break;
                                     case CURRENT:
                                     default:
-                                        ((MainActivity) getActivity()).resetCurrentRolls();
+                                        ((MainActivity) getSherlockActivity()).resetCurrentRolls();
                                 }
                             }
                         })
