@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 
 import android.widget.LinearLayout;
 
-public class HistoricRollsFragment extends Fragment implements
-        ActionBar.TabListener {
+public class HistoricRollsFragment extends Fragment {
 
     private Rolls mRolls;
-    private boolean mFresh;
     private BarChartView mBarChartView;
 
     public HistoricRollsFragment() {
@@ -28,7 +26,6 @@ public class HistoricRollsFragment extends Fragment implements
 
     public HistoricRollsFragment(Rolls rolls) {
         mRolls = rolls;
-        mFresh = true;
     }
 
     @Override
@@ -70,22 +67,5 @@ public class HistoricRollsFragment extends Fragment implements
     private void showClearDialog() {
         DialogFragment newFragment = ClearDialogFragment.newInstance(ClearDialogFragment.HISTORIC);
         newFragment.show(getFragmentManager(), "dialog");
-    }
-
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-        if (mFresh) {
-            mFresh = false;
-            ft.replace(android.R.id.content, this, "current");
-        } else {
-            ft.attach(this);
-        }
-    }
-
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-        if (!mFresh)
-            ft.detach(this);
-    }
-
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
     }
 }

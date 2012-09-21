@@ -1,11 +1,8 @@
 package com.jgrocho.dicetracker;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,13 +18,11 @@ import android.widget.LinearLayout;
 
 import com.jgrocho.layout.FlowLayout;
 
-public class CurrentRollsFragment extends Fragment implements
-        ActionBar.TabListener {
+public class CurrentRollsFragment extends Fragment {
 
     private Button[] mNumeralButtons;
     private BarChartView mBarChartView;
     private Rolls mRolls;
-    private boolean mFresh;
 
     public CurrentRollsFragment() {
         this(new Rolls());
@@ -35,7 +30,6 @@ public class CurrentRollsFragment extends Fragment implements
 
     public CurrentRollsFragment(Rolls rolls) {
         mRolls = rolls;
-        mFresh = true;
     }
 
     @Override
@@ -123,22 +117,5 @@ public class CurrentRollsFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         ((ViewGroup) getView().findViewById(R.id.buttonFlow)).removeAllViews();
-    }
-
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-        if (mFresh) {
-            mFresh = false;
-            ft.replace(android.R.id.content, this, "current");
-        } else {
-            ft.attach(this);
-        }
-    }
-
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-        if (!mFresh)
-            ft.detach(this);
-    }
-
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
     }
 }

@@ -3,6 +3,8 @@ package com.jgrocho.dicetracker;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -11,7 +13,6 @@ public class MainActivity extends Activity {
 
     private Rolls mCurrentRolls;
     private Rolls mHistoricRolls;
-
     private CurrentRollsFragment mCurrentRollsFragment;
     private HistoricRollsFragment mHistoricRollsFragment;
 
@@ -21,39 +22,32 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         int tabIdx = 0;
+        mCurrentRolls = new Rolls();
+        mHistoricRolls = new Rolls();
         if (savedInstanceState != null) {
-            mCurrentRolls = new Rolls(savedInstanceState.getIntArray("current"));
-            mHistoricRolls = new Rolls(savedInstanceState.getIntArray("historic"));
+            mCurrentRolls.setData(savedInstanceState.getIntArray("current"));
+            mHistoricRolls.setData(savedInstanceState.getIntArray("historic"));
             tabIdx = savedInstanceState.getInt("tab");
         } else {
             SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-            mCurrentRolls = new Rolls();
-            mHistoricRolls = new Rolls();
             for (int i = 0; i < 11; i++) {
                 mCurrentRolls.setAt(i, prefs.getInt("current" + String.valueOf(i), 0));
                 mHistoricRolls.setAt(i, prefs.getInt("historic" + String.valueOf(i), 0));
             }
         }
 
-
-        if (mCurrentRollsFragment == null)
-            mCurrentRollsFragment = new CurrentRollsFragment(mCurrentRolls);
-        if (mHistoricRollsFragment == null)
-            mHistoricRollsFragment = new HistoricRollsFragment(mHistoricRolls);
+        mCurrentRollsFragment = new CurrentRollsFragment(mCurrentRolls);
+        mHistoricRollsFragment = new HistoricRollsFragment(mHistoricRolls);
 
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        Tab tab = actionBar
-                .newTab()
-                .setText(R.string.current_rolls_title)
-                .setTabListener(mCurrentRollsFragment);
+        Tab tab = actionBar.newTab().setText(R.string.current_rolls_title)
+                .setTabListener(new TabListener(mCurrentRollsFragment, "current"));
         actionBar.addTab(tab);
 
-        tab = actionBar
-                .newTab()
-                .setText(R.string.historic_rolls_title)
-                .setTabListener(mHistoricRollsFragment);
+        tab = actionBar.newTab().setText(R.string.historic_rolls_title)
+                .setTabListener(new TabListener(mHistoricRollsFragment, "historic"));
         actionBar.addTab(tab);
 
         actionBar.setSelectedNavigationItem(tabIdx);
@@ -100,5 +94,33 @@ public class MainActivity extends Activity {
             mHistoricRolls.increateAtBy(i, mCurrentRolls.getAt(i));
         resetCurrentRolls();
         saveData();
+    }
+
+    public static class TabListener implements ActionBar.TabListener {
+        private Fragment mFragment;
+        private boolean mAdded;
+        private final String mTag;
+
+        public TabListener(Fragment fragment, String tag) {
+            mFragment = fragment;
+            mAdded = false;
+            mTag = tag;
+        }
+
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+            if (!mAdded) {
+                mAdded = true;
+                ft.replace(android.R.id.content, mFragment, mTag);
+            } else {
+                ft.attach(mFragment);
+            }
+        }
+
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+            ft.detach(mFragment);
+        }
+
+        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+        }
     }
 }
