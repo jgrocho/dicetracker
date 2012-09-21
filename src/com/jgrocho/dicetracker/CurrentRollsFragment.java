@@ -98,7 +98,7 @@ public class CurrentRollsFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_clear:
+            case R.id.menu_current_clear:
                 showClearDialog();
                 break;
             case R.id.menu_save:

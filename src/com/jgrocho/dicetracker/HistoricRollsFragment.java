@@ -59,7 +59,7 @@ public class HistoricRollsFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_clear:
+            case R.id.menu_historic_clear:
                 showClearDialog();
                 break;
         }
