@@ -48,6 +48,7 @@ public class CurrentRollsFragment extends Fragment {
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < 11; i++) {
+            final int key = i;
             Button button = new Button(activity);
             button.setLayoutParams(lp);
             button.setText(numerals[i]);
@@ -55,7 +56,11 @@ public class CurrentRollsFragment extends Fragment {
             button.setMinimumHeight(minSize);
             button.setMinWidth(minSize);
             button.setMinimumWidth(minSize);
-            button.setTag(i);
+            button.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    mRolls.increaseAt(key);
+                }
+            });
             mNumeralButtons[i] = button;
         }
     }
@@ -72,14 +77,8 @@ public class CurrentRollsFragment extends Fragment {
 
         mBarChartView.setRolls(mRolls);
         mRolls.registerListener(mBarChartView);
-        for (int i = 0; i < 11; i++) {
-            mNumeralButtons[i].setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    mRolls.increaseAt(((Integer) v.getTag()).intValue());
-                }
-            });
+        for (int i = 0; i < 11; i++)
             buttonLayout.addView(mNumeralButtons[i]);
-        }
 
         return view;
     }
