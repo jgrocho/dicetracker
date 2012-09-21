@@ -1,11 +1,11 @@
 package com.jgrocho.dicetracker;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Rolls {
 
     private int[] mData;
-    private ArrayList<OnChangeListener> mListeners;
+    private HashSet<OnChangeListener> mListeners;
 
     public Rolls() {
         this(new int[11]);
@@ -13,7 +13,7 @@ public class Rolls {
 
     public Rolls(int[] data) {
         mData = data;
-        mListeners = new ArrayList<OnChangeListener>();
+        mListeners = new HashSet<OnChangeListener>();
     }
 
     public int[] getRolls() {
