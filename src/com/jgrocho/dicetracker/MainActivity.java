@@ -70,6 +70,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        saveData();
+    }
+
+    private void saveData() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         Editor prefEditor = prefs.edit();
         for (int i = 0; i < 11; i++) {
@@ -83,12 +87,14 @@ public class MainActivity extends Activity {
         for (int i = 0; i < 11; i++)
             mRolls[i] = 0;
         mCurrentRollsFragment.setRolls(mRolls);
+        saveData();
     }
 
     protected void resetHistoricRolls() {
         for (int i = 0; i < 11; i++)
             mHistoricRolls[i] = 0;
         mHistoricRollsFragment.setRolls(mHistoricRolls);
+        saveData();
     }
 
     protected void saveRolls() {
@@ -96,5 +102,6 @@ public class MainActivity extends Activity {
             mHistoricRolls[i] += mRolls[i];
         resetCurrentRolls();
         mHistoricRollsFragment.setRolls(mHistoricRolls);
+        saveData();
     }
 }

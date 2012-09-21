@@ -72,7 +72,7 @@ public class HistoricRollsFragment extends Fragment implements
     }
 
     public void setRolls(int[] rolls) {
-        mRolls = rolls;
+        mBarChartView.setRolls(rolls);
     }
 
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
