@@ -18,15 +18,15 @@ import android.widget.LinearLayout;
 public class HistoricRollsFragment extends Fragment implements
         ActionBar.TabListener {
 
-    private int[] mRolls;
+    private Rolls mRolls;
     private boolean mFresh;
     private BarChartView mBarChartView;
 
     public HistoricRollsFragment() {
-        this(new int[11]);
+        this(new Rolls());
     }
 
-    public HistoricRollsFragment(int[] rolls) {
+    public HistoricRollsFragment(Rolls rolls) {
         mRolls = rolls;
         mFresh = true;
     }
@@ -46,6 +46,7 @@ public class HistoricRollsFragment extends Fragment implements
 
         mBarChartView = (BarChartView) view.getChildAt(0);
         mBarChartView.setRolls(mRolls);
+        mRolls.registerListener(mBarChartView);
 
         return view;
     }
@@ -69,10 +70,6 @@ public class HistoricRollsFragment extends Fragment implements
     private void showClearDialog() {
         DialogFragment newFragment = ClearDialogFragment.newInstance(ClearDialogFragment.HISTORIC);
         newFragment.show(getFragmentManager(), "dialog");
-    }
-
-    public void setRolls(int[] rolls) {
-        mBarChartView.setRolls(rolls);
     }
 
     public void onTabSelected(Tab tab, FragmentTransaction ft) {

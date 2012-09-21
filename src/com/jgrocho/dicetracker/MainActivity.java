@@ -9,8 +9,8 @@ import android.os.Bundle;
 
 public class MainActivity extends Activity {
 
-    private int[] mRolls;
-    private int[] mHistoricRolls;
+    private Rolls mCurrentRolls;
+    private Rolls mHistoricRolls;
 
     private CurrentRollsFragment mCurrentRollsFragment;
     private HistoricRollsFragment mHistoricRollsFragment;
@@ -22,24 +22,24 @@ public class MainActivity extends Activity {
 
         int tabIdx = 0;
         if (savedInstanceState != null) {
-            mRolls = savedInstanceState.getIntArray("current");
-            mHistoricRolls = savedInstanceState.getIntArray("historic");
+            mCurrentRolls = new Rolls(savedInstanceState.getIntArray("current"));
+            mHistoricRolls = new Rolls(savedInstanceState.getIntArray("historic"));
             tabIdx = savedInstanceState.getInt("tab");
         } else {
             SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-            mRolls = new int[11];
-            mHistoricRolls = new int[11];
+            mCurrentRolls = new Rolls();
+            mHistoricRolls = new Rolls();
             for (int i = 0; i < 11; i++) {
-                mRolls[i] = prefs.getInt("current" + String.valueOf(i), 0);
-                mHistoricRolls[i] = prefs.getInt("historic" + String.valueOf(i), 0);
+                mCurrentRolls.setAt(i, prefs.getInt("current" + String.valueOf(i), 0));
+                mHistoricRolls.setAt(i, prefs.getInt("historic" + String.valueOf(i), 0));
             }
         }
 
 
         if (mCurrentRollsFragment == null)
-            mCurrentRollsFragment = new CurrentRollsFragment(mRolls);
+            mCurrentRollsFragment = new CurrentRollsFragment(mCurrentRolls);
         if (mHistoricRollsFragment == null)
-            mHistoricRollsFragment = new HistoricRollsFragment();
+            mHistoricRollsFragment = new HistoricRollsFragment(mHistoricRolls);
 
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -62,8 +62,8 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putIntArray("current", mRolls);
-        savedInstanceState.putIntArray("historic", mHistoricRolls);
+        savedInstanceState.putIntArray("current", mCurrentRolls.getRolls());
+        savedInstanceState.putIntArray("historic", mHistoricRolls.getRolls());
         savedInstanceState.putInt("tab", getActionBar().getSelectedNavigationIndex());
     }
 
@@ -77,31 +77,28 @@ public class MainActivity extends Activity {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         Editor prefEditor = prefs.edit();
         for (int i = 0; i < 11; i++) {
-            prefEditor.putInt("current" + String.valueOf(i), mRolls[i]);
-            prefEditor.putInt("historic" + String.valueOf(i), mHistoricRolls[i]);
+            prefEditor.putInt("current" + String.valueOf(i), mCurrentRolls.getAt(i));
+            prefEditor.putInt("historic" + String.valueOf(i), mHistoricRolls.getAt(i));
         }
         prefEditor.apply();
     }
 
     protected void resetCurrentRolls() {
         for (int i = 0; i < 11; i++)
-            mRolls[i] = 0;
-        mCurrentRollsFragment.setRolls(mRolls);
+            mCurrentRolls.setAt(i, 0);
         saveData();
     }
 
     protected void resetHistoricRolls() {
         for (int i = 0; i < 11; i++)
-            mHistoricRolls[i] = 0;
-        mHistoricRollsFragment.setRolls(mHistoricRolls);
+            mHistoricRolls.setAt(i, 0);
         saveData();
     }
 
     protected void saveRolls() {
         for (int i = 0; i < 11; i++)
-            mHistoricRolls[i] += mRolls[i];
+            mHistoricRolls.increateAtBy(i, mCurrentRolls.getAt(i));
         resetCurrentRolls();
-        mHistoricRollsFragment.setRolls(mHistoricRolls);
         saveData();
     }
 }

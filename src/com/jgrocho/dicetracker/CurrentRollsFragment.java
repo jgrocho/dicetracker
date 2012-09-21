@@ -26,14 +26,14 @@ public class CurrentRollsFragment extends Fragment implements
 
     private Button[] mNumeralButtons;
     private BarChartView mBarChartView;
-    private int[] mRolls;
+    private Rolls mRolls;
     private boolean mFresh;
 
     public CurrentRollsFragment() {
-        this(new int[11]);
+        this(new Rolls());
     }
 
-    public CurrentRollsFragment(int[] rolls) {
+    public CurrentRollsFragment(Rolls rolls) {
         mRolls = rolls;
         mFresh = true;
     }
@@ -77,10 +77,11 @@ public class CurrentRollsFragment extends Fragment implements
                 .findViewById(R.id.buttonFlow);
 
         mBarChartView.setRolls(mRolls);
+        mRolls.registerListener(mBarChartView);
         for (int i = 0; i < 11; i++) {
             mNumeralButtons[i].setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    mBarChartView.increaseAt(((Integer) v.getTag()).intValue());
+                    mRolls.increaseAt(((Integer) v.getTag()).intValue());
                 }
             });
             buttonLayout.addView(mNumeralButtons[i]);
@@ -122,10 +123,6 @@ public class CurrentRollsFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         ((ViewGroup) getView().findViewById(R.id.buttonFlow)).removeAllViews();
-    }
-
-    public void setRolls(int[] rolls) {
-        mBarChartView.setRolls(rolls);
     }
 
     public void onTabSelected(Tab tab, FragmentTransaction ft) {

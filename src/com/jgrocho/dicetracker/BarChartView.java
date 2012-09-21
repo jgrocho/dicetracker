@@ -9,8 +9,8 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class BarChartView extends View {
-    private int[] mRolls;
+public class BarChartView extends View implements Rolls.OnChangeListener {
+    private Rolls mRolls;
 
     private Paint mBarPaint;
     private Paint mBarBorderPaint;
@@ -67,8 +67,6 @@ public class BarChartView extends View {
         mBarBorderPaint = createPaint(barBorderColor);
         mBarTextPaint = createTextPaint(barTextColor, barTextSize);
         mLabelPaint = createTextPaint(labelColor, labelSize);
-
-        mRolls = new int[11];
     }
 
     @Override
@@ -98,30 +96,25 @@ public class BarChartView extends View {
         }
 
         // Draw bars
-        int maxCount = max(mRolls);
+        int maxCount = max(mRolls.getRolls());
         if (maxCount > 0) {
             float segmentHeight = mChartHeight / maxCount;
             for (int i = 0; i < 11; i++) {
-                if (mRolls[i] > 0) {
+                if (mRolls.getAt(i) > 0) {
                     float left = i * mBarWidth;
                     float right = left + mBarWidth;
-                    float top = mChartHeight - mRolls[i] * segmentHeight;
+                    float top = mChartHeight - mRolls.getAt(i) * segmentHeight;
                     float bottom = mChartHeight;
                     canvas.drawRect(left + 1, top + 1, right - 1, bottom, mBarBorderPaint);
                     canvas.drawRect(left + 2, top + 2, right - 2, bottom, mBarPaint);
-                    canvas.drawText(String.valueOf(mRolls[i]), left + (mBarWidth / 2), top + mBarTextPaint.getFontMetrics().bottom * 3 + 5, mBarTextPaint);
+                    canvas.drawText(String.valueOf(mRolls.getAt(i)), left + (mBarWidth / 2), top + mBarTextPaint.getFontMetrics().bottom * 3 + 5, mBarTextPaint);
                 }
             }
         }
     }
 
-    public void setRolls(int[] rolls) {
+    public void setRolls(Rolls rolls) {
         mRolls = rolls;
-        invalidate();
-    }
-
-    public void increaseAt(int key) {
-        mRolls[key]++;
         invalidate();
     }
 
@@ -146,5 +139,13 @@ public class BarChartView extends View {
         paint.setColor(color);
         paint.setTextSize(size);
         return paint;
+    }
+
+    public void onSet() {
+        invalidate();
+    }
+
+    public void onChange(int idx) {
+        invalidate();
     }
 }
